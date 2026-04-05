@@ -11,7 +11,6 @@ Diese Kurzfilm-Review-Plattform wird mit Astro entwickelt und bietet ein moderne
 5. **Persönliche Sammlung**: Nutzer:innen können Kurzfilme speichern und in einer persönlichen Sammlung organisieren
 6. **Film-Favoriten**: Filme mit "Mag ich" markieren und verwalten
 7. **Suchfunktion**: Kurzfilme nach Titel, Autor oder Beschreibung durchsuchen
-8. **Bewertungsanzeige**: Aggregierte Bewertungen und Benutzermeinungen anzeigen
 
 ## Technologien
 - **Frontend**: Astro, Svelte, CSS
