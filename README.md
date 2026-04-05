@@ -1,43 +1,40 @@
-# Astro Starter Kit: Minimal
+# Film Review Application
 
-```sh
-npm create astro@latest -- --template minimal
-```
+## Overview
+This Film Review Application is built with Astro, providing a modern framework for creating fast websites. The application allows users to browse, review, and rate various films in an interactive and engaging user interface.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Features
+1. **User Authentication**: Secure login and registration for users.
+2. **Film Reviews**: Users can write, edit, and delete their reviews.
+3. **Film Ratings**: Rate films on a scale of 1 to 5.
+4. **Search Functionality**: Users can search for films by title or genre.
+5. **Responsive Design**: Optimized for mobile and desktop viewing.
 
-## 🚀 Project Structure
+## Technologies Used
+- **Frontend**: Astro, React, CSS
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
 
-Inside of your Astro project, you'll see the following folders and files:
+## Getting Started
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Fuerst576/Semesterprojekt-User-Interface-Programmierung.git
+   ```
+2. Navigate to the project folder:
+   ```bash
+   cd Semesterprojekt-User-Interface-Programmierung
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Run the application:
+   ```bash
+   npm start
+   ```
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Contributing
+If you wish to contribute to this project, feel free to fork the repository and submit a pull request.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
