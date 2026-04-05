@@ -1,14 +1,19 @@
-# Film Review Application
+# Kurzfilm-Review-Plattform
 
-## Overview
-This Film Review Application is built with Astro, providing a modern framework for creating fast websites. The application allows users to browse, review, and rate various films in an interactive and engaging user interface.
+## Übersicht
+Diese Kurzfilm-Review-Plattform wird mit Astro entwickelt und bietet ein modernes Framework für eine schnelle und ansprechende Webseite. Die Anwendung ermöglicht es Nutzer:innen, Kurzfilme zu entdecken, zu bewerten und zu sammeln.
 
 ## Features
-1. **User Authentication**: Secure login and registration for users.
-2. **Film hinzufügen**
-3. **Film Reviews**: Users can write, edit, and delete their reviews.
-4. **Film Like**:
+1. **Benutzerauthentifizierung**: Sichere Registrierung und Anmeldung für Nutzer:innen
+2. **Kurzfilme anlegen**: Nutzer:innen können ihre eigenen Kurzfilme hochladen und präsentieren
+3. **Bewertungen verfassen**: Nutzer:innen können Bewertungen schreiben, bearbeiten und löschen
+4. **Genre-Filter**: Kurzfilme können nach verschiedenen Genres gefiltert werden
+5. **Persönliche Sammlung**: Nutzer:innen können Kurzfilme speichern und in einer persönlichen Sammlung organisieren
+6. **Film-Favoriten**: Filme mit "Mag ich" markieren und verwalten
+7. **Suchfunktion**: Kurzfilme nach Titel, Autor oder Beschreibung durchsuchen
+8. **Bewertungsanzeige**: Aggregierte Bewertungen und Benutzermeinungen anzeigen
 
-## Technologies Used
+## Technologien
 - **Frontend**: Astro, Svelte, CSS
-- **Database**: phpMyAdmin
+- **Backend**: Astro API Routes
+- **Datenbank**: phpMyAdmin
