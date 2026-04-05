@@ -1,0 +1,66 @@
+---
+const { filmId } = Astro.props;
+---
+<button id="favoriteToggle" aria-label="Favorit" data-filmid={filmId} title="Favorit">
+    <svg aria-hidden="true" width="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path class="favorit-filled" fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42
+        4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0
+        3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        <path class="favorit-outline" fill="none" stroke="currentColor" stroke-width="2"
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42
+              4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3
+              19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+</button>
+
+<style>
+    #favoriteToggle {
+        border: 0;
+        background: none;
+        cursor: pointer;
+        padding: 4px;
+    }
+    .favorit-filled { display: none; color: red; }
+    .favorit-outline { display: inline; color: currentColor; }
+
+    #favoriteToggle.is-saved .favorit-filled { display: inline; }
+    #favoriteToggle.is-saved .favorit-outline { display: none; }
+</style>
+
+<script is:inline>
+    (async () => {
+        const btn = document.getElementById("favoriteToggle");
+        if (!btn) return;
+
+        const filmId = btn.dataset.filmid;
+        const API = "https://mt241022-10927.node.ustp.cloud/saved-films";
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            btn.title = "Bitte einloggen, um Favoriten zu nutzen";
+            btn.disabled = true;
+            return;
+        }
+
+        // Status initial laden
+        const res = await fetch(API, { headers: { "Authorization": `Bearer ${token}` } });
+        const saved = await res.json();
+        const entry = saved.find(s => String(s.film_id) === String(filmId));
+        if (entry) btn.classList.add("is-saved"), btn.dataset.savedid = entry.id;
+
+// Klick umschalten
+        btn.addEventListener("click", async () => {
+            const method = btn.classList.contains("is-saved") ? "DELETE" : "POST";
+
+            const res = await fetch(`${API}/${filmId}`, {
+                method,
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                btn.classList.toggle("is-saved");
+            }
+        });
+
+    })();
+</script>

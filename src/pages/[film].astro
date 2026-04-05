@@ -1,0 +1,186 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+export const prerender = false;
+
+const { film } = Astro.params;
+
+const res = await fetch(`https://mt241022-10927.node.ustp.cloud/films/${film}`);
+const films = await res.json();
+
+const resreviews = await fetch(`https://mt241022-10927.node.ustp.cloud/reviews/film/${film}`);
+const reviews = await resreviews.json();
+
+const pageTitle = films.title;
+
+import Favoriten from '../components/FavoritenSwitch.astro';
+
+---
+
+<BaseLayout>
+<div style="display: flex; align-items: center; gap: 20px;width: 100%;">
+    <h1>{pageTitle}</h1>
+    <Favoriten  filmId={films.id}/>
+</div>
+
+    <p>{films.description}</p>
+
+    <form id="kommentarhinzufügen">
+        <input type="hidden" value={films.id} id="filmid" />
+        <label for="contant">Kommentar:</label><br/>
+        <input type="text" id="contant" /><br/>
+        <button type="submit" style="margin-top: 10px">Kommentar hinzufügen</button>
+    </form>
+
+
+    <ul id="reviewlist">
+                    {reviews.map((review) => (
+                            <li class="reviewlist-item" data-review-userid={review.user_id}>
+                                <hr>
+                                <h3>{review.username}: </h3>
+                                <p>{review.content}</p>
+                                <form class="bearbeiten" data-reviewid={review.id} data-userid={films.id} hidden>
+                                    <label>Kommentar bearbeiten:</label><br/>
+                                    <input
+                                            type="text"
+                                            class="kommentarbearbeiten"
+                                            value={review.content}
+                                    /><br/>
+                                    <button type="submit">Bearbeiten</button>
+                                </form>
+                                <form class="loschen" data-reviewid={review.id} hidden>
+                                    <button type="submit">Löschen</button>
+                                </form>
+                            </li>
+                    ))}
+
+
+    </ul>
+
+</BaseLayout>
+
+
+<script>
+    (async () => {
+        const username = localStorage.getItem("username");
+        if (!username) return;
+
+        const resUser = await fetch(
+            `https://mt241022-10927.node.ustp.cloud/users/${username}`
+        );
+        const user = await resUser.json();
+        const loggedInUserId = user.id;
+
+        document.querySelectorAll(".reviewlist-item").forEach(item => {
+            const reviewUserId = item.dataset.reviewUserid;
+
+            if (String(reviewUserId) === String(loggedInUserId)) {
+                item.querySelector(".bearbeiten")?.removeAttribute("hidden");
+                item.querySelector(".loschen")?.removeAttribute("hidden");
+            }
+        });
+    })();
+</script>
+
+
+
+
+<script>
+    const loschenForms = document.querySelectorAll(".loschen");
+
+    loschenForms.forEach((form) => {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const reviewid = form.dataset.reviewid;
+            const token = localStorage.getItem("token");
+
+            await fetch(
+                `https://mt241022-10927.node.ustp.cloud/reviews/${reviewid}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    },
+                }
+            );
+            window.location.reload("#");
+
+        });
+
+    });
+</script>
+
+<script>
+    const bearbeitenForms = document.querySelectorAll(".bearbeiten");
+
+    bearbeitenForms.forEach((form) => {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const reviewid = form.dataset.reviewid;
+            const content = form.querySelector(".kommentarbearbeiten").value;
+            const token = localStorage.getItem("token");
+
+            await fetch(
+                `https://mt241022-10927.node.ustp.cloud/reviews/${reviewid}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ content }),
+                }
+            );
+            window.location.reload("#");
+
+        });
+
+    });
+</script>
+
+
+<script>
+    const form = document.getElementById("kommentarhinzufügen");
+
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const content = document.getElementById("contant").value;
+        const filmId = document.getElementById("filmid").value;
+        const token = localStorage.getItem("token");
+        const username = localStorage.getItem("username");
+
+        const resUser = await fetch(
+            `https://mt241022-10927.node.ustp.cloud/users/${username}`
+        );
+        const user = await resUser.json();
+
+        console.log(
+            "Submitting review:",
+            {
+                content: content,
+                film_id: filmId,
+                user_id: user.id,
+            }
+        );
+
+        await fetch("https://mt241022-10927.node.ustp.cloud/reviews", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                content: content,
+                film_id: filmId,
+                user_id: user.id,
+            }),
+        });
+
+
+window.location.reload("#");
+    });
+</script>

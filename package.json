@@ -1,0 +1,20 @@
+{
+  "name": "uip-semesterprojekt",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/node": "^9.5.2",
+    "@astrojs/svelte": "^7.2.5",
+    "astro": "^5.16.11",
+    "mode-watcher": "^1.1.0",
+    "svelte": "^5.48.0",
+    "typescript": "^5.9.3"
+  }
+}

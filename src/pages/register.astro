@@ -1,0 +1,48 @@
+---
+const pageTitle = "Register";
+import '../styles/global.css';
+
+
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+</head>
+<body>
+
+
+    <h1>{pageTitle}</h1>
+<div class="lr">
+    <form id="registerForm">
+        <input type="text" id="username" placeholder="Username" required /> <br>
+        <input type="password" id="password" placeholder="Password" required /> <br>
+        <button type="submit">Register</button>
+    </form>
+<a href="/login">Already have an account? Login here.</a>
+</div>
+</body>
+</html>
+
+
+<script>
+    const form = document.getElementById("registerForm");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        await fetch("https://mt241022-10927.node.ustp.cloud/users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+            }),
+        });
+
+         window.location.href = "/login";
+    });
+</script>

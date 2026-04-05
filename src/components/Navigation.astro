@@ -1,0 +1,36 @@
+---
+import ThemeIcon from './ThemeIcon.astro';
+
+---
+<div id="main-menu" class="nav-links">
+  <!-- <a href="/"><img src="../img/logo.png"/></a>-->
+    <a href="/">Startseite</a>
+    <a href="/favoriten">Favoriten</a>
+    <button id="logout">Logout</button>
+    <div id="theme">
+    <ThemeIcon />
+    </div>
+</div>
+
+<script type="module">
+    if (typeof window !== 'undefined') {
+        const username = localStorage.getItem('username');
+        const logoutBtn = document.getElementById('logout');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                window.location.href = '/login';
+            });
+        }
+    }
+</script>
+
+<style>
+    #theme {
+position: absolute;
+top: 25px;
+right: 130px;
+
+    }
+</style>

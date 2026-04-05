@@ -1,0 +1,68 @@
+astro
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const pageTitle = "Favoriten";
+
+const responseFilms = await fetch("https://mt241022-10927.node.ustp.cloud/films");
+const films: any[] = await responseFilms.json();
+
+---
+<BaseLayout pageTitle={pageTitle}>
+    <div class="content">
+        <div class="container">
+
+
+
+            <ul id="filmlist">
+                {films.map((film: any) => (
+                        <a class="filmlist-a" href={`/${film.id}`}>
+                            <li class="filmlist-item" data-filmid={film.id} style="display:none;">
+                                {film.title}
+                            </li>
+                        </a>
+                ))}
+            </ul>
+        </div>
+    </div>
+</BaseLayout>
+
+<script>
+    (async () => {
+        const status = document.getElementById("status") as HTMLElement | null;
+        const items = document.querySelectorAll(".filmlist-item") as NodeListOf<HTMLElement>;
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            if (status) status.textContent = "Nicht eingeloggt oder kein Token vorhanden.";
+            return;
+        }
+
+        try {
+            const res = await fetch("https://mt241022-10927.node.ustp.cloud/saved-films", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+
+
+            const saved = await res.json();
+
+
+            const savedSet = new Set(saved.map((s: any) => String(s.film_id)));
+
+            items.forEach(item => {
+                const filmId = String(item.dataset.filmid);
+                if (savedSet.has(filmId)) {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            if (status) status.style.display = "none";
+        } catch (err) {
+            if (status) status.textContent = "Fehler beim Laden der gespeicherten Filme.";
+            console.error(err);
+        }
+
+    })();
+</script>

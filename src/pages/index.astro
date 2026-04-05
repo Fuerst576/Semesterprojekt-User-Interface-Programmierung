@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const pageTitle = "Sag uns deine Meinung";
+---
+
+
+
+<BaseLayout pageTitle={pageTitle}>
+    <div class="content">
+        <div class="container">
+            <form action="/filmhinzufuegen">
+                <button id="filmhinzufugen" type="submit">Film Hinzufügen</button>
+            </form>
+
+            <select id="genreFilter">
+                <option value="">Alle Genres</option>
+            </select>
+        </div>
+
+        <ul id="filmlist"></ul>
+    </div>
+</BaseLayout>
+
+
+
+<script>
+    const filmList = document.getElementById("filmlist");
+    const genreSelect = document.getElementById("genreFilter");
+
+    async function loadData() {
+        const [filmsRes, genresRes] = await Promise.all([
+            fetch("https://mt241022-10927.node.ustp.cloud/films"),
+            fetch("https://mt241022-10927.node.ustp.cloud/genres"),
+        ]);
+
+        const films = await filmsRes.json();
+        const genres = await genresRes.json();
+
+        // Genres laden
+        if (genres.length === 0) {
+            genreSelect.insertAdjacentHTML(
+                "afterend",
+                "<p>Keine Genres vorhanden.</p>"
+            );
+        } else {
+            genres.forEach((genre) => {
+                const option = document.createElement("option");
+                option.value = genre.id;
+                option.textContent = genre.name;
+                genreSelect.appendChild(option);
+            });
+        }
+
+        // Filme laden
+        if (films.length === 0) {
+            filmList.insertAdjacentHTML(
+                "afterend",
+                "<p>Keine Filme vorhanden.</p>"
+            );
+        } else {
+            films.forEach((film) => {
+                const a = document.createElement("a");
+                a.href = `/${film.id}`;
+                a.className = "filmlist-a";
+
+                const li = document.createElement("li");
+                li.className = "filmlist-item";
+                li.dataset.genre = film.genre_id;
+                li.textContent = film.title;
+
+                a.appendChild(li);
+                filmList.appendChild(a);
+            });
+        }
+    }
+
+    // Filter
+    genreSelect.addEventListener("change", () => {
+        const selectedGenre = genreSelect.value;
+        document.querySelectorAll(".filmlist-item").forEach((item) => {
+            item.style.display =
+                !selectedGenre || item.dataset.genre === selectedGenre
+                    ? "flex"
+                    : "none";
+        });
+    });
+
+    loadData();
+</script>
